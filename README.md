@@ -220,7 +220,7 @@ git clone https://github.com/YourUsername/ONNs-SEIR.git
 Move into the project directory
 
 ```bash
-cd ONNs-SEIR
+cd RK4_SEIR.ipynb
 ```
 
 Install dependencies
