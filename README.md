@@ -88,7 +88,7 @@ where
 # 🧠 Oscillatory Neural Network Architecture
 
 <p align="center">
-<img src="Architecture.png" width="850">
+<img src="architecture.png" width="850">
 </p>
 
 Each SEIR compartment is approximated using an independent fully connected Oscillatory Neural Network.
