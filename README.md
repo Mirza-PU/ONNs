@@ -113,9 +113,6 @@ Automatic differentiation computes derivatives required by the differential equa
 
 # 📊 Workflow
 
-<p align="center">
-<img src="Workflow.png" width="900">
-</p>
 
 The complete workflow consists of
 
