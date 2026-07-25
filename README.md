@@ -242,7 +242,7 @@ python train.py
 or execute the Jupyter Notebook
 
 ```bash
-ONNs_SEIR.ipynb
+RK4_SEIR.ipynb
 ```
 
 The program automatically
