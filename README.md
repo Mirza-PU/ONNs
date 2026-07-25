@@ -1,349 +1,365 @@
-🦠 Learning Hidden Epidemic Dynamics Using a Time-Varying SEIRD Physics-Informed Neural Network from Real COVID-19 Data
+# Implementation of Oscillatory Neural Networks for the Simulation of Nonlinear Dynamical Systems
 
-<p align="center">"Python" (https://img.shields.io/badge/Python-3.10+-blue.svg)
-"PyTorch" (https://img.shields.io/badge/PyTorch-2.x-red.svg)
-"License" (https://img.shields.io/badge/License-MIT-green.svg)
-"Status" (https://img.shields.io/badge/Status-Research-orange.svg)
-
-</p><p align="center">
-A <b>Physics-Informed Neural Network (PINN)</b> framework for learning hidden epidemic dynamics and estimating <b>time-varying SEIRD epidemiological parameters</b> directly from real COVID-19 data.
-</p>---
-
-📌 Overview
-
-This repository presents a Physics-Informed Neural Network (PINN) framework for modeling infectious disease dynamics using the SEIRD (Susceptible–Exposed–Infected–Recovered–Deceased) compartmental model.
-
-Unlike conventional numerical approaches that require predefined epidemiological parameters, the proposed framework integrates the governing SEIRD differential equations directly into the neural network training process. The model simultaneously learns hidden epidemic states and time-varying parameters from observed COVID-19 data while ensuring that the learned dynamics remain physically consistent.
+<p align="center">
+<b>A deep learning framework based on Oscillatory Neural Networks (ONNs) for solving nonlinear dynamical systems with an application to the COVID-19 SEIR epidemic model.</b>
+</p>
 
 ---
 
-✨ Key Features
+# 📖 Overview
 
-- Physics-Informed Neural Network (PINN)
-- Time-Varying SEIRD Model
-- Automatic Differentiation using PyTorch
-- Hidden Epidemic State Estimation
-- Time-Varying Transmission, Recovery, Incubation, and Mortality Rates
-- Real COVID-19 Data Analysis
-- GPU Compatible
-- Google Colab Ready
-- Fully Reproducible Research Code
+This repository presents an implementation of **Oscillatory Neural Networks (ONNs)** for the numerical simulation of nonlinear dynamical systems governed by ordinary differential equations (ODEs).
+
+As a case study, the framework is applied to the classical **SEIR (Susceptible–Exposed–Infected–Recovered)** epidemic model describing the transmission dynamics of COVID-19.
+
+Traditional numerical solvers such as Runge–Kutta methods require iterative computations and may become computationally demanding for complex nonlinear systems. In contrast, the proposed approach employs **Oscillatory Neural Networks (ONNs)** trained using **Stochastic Gradient Descent (SGD)** to directly approximate the solution of the governing differential equations while satisfying the prescribed initial conditions.
+
+The implementation is built using the **NeuroDiffEq** library, which enables neural networks to solve differential equations through automatic differentiation.
 
 ---
 
-📂 Repository Structure
+# ✨ Key Features
 
-SEIRD-PINN/
+- Deep learning solver for nonlinear ordinary differential equations
+- Oscillatory Neural Networks (ONNs)
+- Stochastic Gradient Descent (SGD) optimization
+- Automatic differentiation using NeuroDiffEq
+- Physics-based solution of SEIR epidemic model
+- Simultaneous prediction of all SEIR compartments
+- No finite difference discretization required
+- Visualization of epidemic dynamics
+- Easy-to-modify neural network architecture
+- Fully reproducible implementation
+
+---
+
+# 🔬 Methodology
+
+The proposed framework consists of the following stages:
+
+1. Define the nonlinear SEIR differential equations
+2. Specify initial conditions
+3. Construct Oscillatory Neural Networks
+4. Train the networks using Stochastic Gradient Descent
+5. Obtain continuous neural-network solutions
+6. Visualize epidemic dynamics
+7. Compare with numerical reference solutions
+
+---
+
+# 🦠 SEIR Epidemic Model
+
+The implemented epidemiological model consists of four compartments:
+
+| Variable | Description |
+|-----------|-------------|
+| **S** | Susceptible population |
+| **E** | Exposed population |
+| **I** | Infected population |
+| **R** | Recovered (Removed) population |
+
+The governing equations are
+
+\[
+\frac{dS}{dt}=-\frac{\beta SI}{N}
+\]
+
+\[
+\frac{dE}{dt}=\frac{\beta SI}{N}-\epsilon E
+\]
+
+\[
+\frac{dI}{dt}=\epsilon E-\gamma I
+\]
+
+\[
+\frac{dR}{dt}=\gamma I
+\]
+
+where
+
+- **β** = Transmission rate
+- **ε** = Incubation rate
+- **γ** = Recovery rate
+- **N** = Total population
+
+---
+
+# 🧠 Oscillatory Neural Network Architecture
+
+<p align="center">
+<img src="Architecture.png" width="850">
+</p>
+
+Each SEIR compartment is approximated using an independent fully connected Oscillatory Neural Network.
+
+The architecture consists of:
+
+- Input layer (time)
+- Two hidden layers (32 neurons each)
+- Sinusoidal activation function (SinActv)
+- Output layer representing one state variable
+
+A separate neural network is trained for each compartment:
+
+- Susceptible
+- Exposed
+- Infected
+- Recovered
+
+Automatic differentiation computes derivatives required by the differential equations during optimization.
+
+---
+
+# 📊 Workflow
+
+<p align="center">
+<img src="Workflow.png" width="900">
+</p>
+
+The complete workflow consists of
+
+- Define SEIR equations
+- Initialize epidemic parameters
+- Specify initial conditions
+- Build Oscillatory Neural Networks
+- Train using SGD optimization
+- Solve differential equations
+- Predict epidemic trajectories
+- Visualize results
+
+---
+
+# ⚙️ Model Parameters
+
+The implementation uses the following parameters:
+
+| Parameter | Value |
+|-----------|-------|
+| Transmission Rate (β) | 0.35 |
+| Incubation Rate (ε) | 0.70 |
+| Recovery Rate (γ) | 0.10 |
+| Population (N) | 25 |
+| Epochs | 6000 |
+| Hidden Layers | 2 |
+| Hidden Units | 32 |
+| Activation Function | SinActv |
+
+---
+
+# 💻 Software and Libraries
+
+The project is implemented using
+
+- Python
+- PyTorch
+- NeuroDiffEq
+- NumPy
+- SciPy
+- Matplotlib
+
+---
+
+# ⚙️ Requirements
+
+Install the required packages
+
+```bash
+pip install torch
+pip install neurodiffeq
+pip install matplotlib
+pip install scipy
+pip install numpy
+```
+
+or
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# 📁 Repository Structure
+
+```
+ONNs-SEIR/
 │
 ├── data/
-│   ├── full_grouped.csv
-│   └── processed_data.csv
-│
-├── notebooks/
-│   └── SEIRD_PINN.ipynb
-│
-├── models/
-│   └── pinn.py
 │
 ├── figures/
-│   ├── architecture.png
-│   ├── infected_prediction.png
-│   ├── recovered_prediction.png
-│   ├── deaths_prediction.png
-│   ├── hidden_states.png
-│   └── learned_parameters.png
+│   ├── Workflow.png
+│   ├── Architecture.png
+│   ├── SEIR_Curves.png
+│   └── Loss.png
 │
-├── train.py
+├── notebooks/
+│   └── ONNs_SEIR.ipynb
+│
+├── src/
+│   ├── model.py
+│   ├── train.py
+│   ├── solver.py
+│   ├── utils.py
+│   └── visualize.py
+│
+├── results/
+│
 ├── requirements.txt
 ├── README.md
 └── LICENSE
+```
 
 ---
 
-🏗️ Model Architecture
+# 🚀 Installation
 
-Upload your architecture figure as:
+Clone this repository
 
-figures/
-└── architecture.png
-
-Then the following code will automatically display it.
-
-<p align="center">
-<img src="figures/architecture.png" width="950">
-</p><p align="center">
-<b>Figure 1.</b> Architecture of the proposed Time-Varying SEIRD Physics-Informed Neural Network. The framework receives normalized time as input, predicts hidden epidemic states and time-varying epidemiological parameters, and is optimized using both observed COVID-19 data and SEIRD differential equation constraints.
-</p>---
-
-🧮 Mathematical Model
-
-The epidemic dynamics are governed by
-
-[
-\frac{dS}{dt}=-\beta(t)\frac{SI}{N}
-]
-
-[
-\frac{dE}{dt}=\beta(t)\frac{SI}{N}-\sigma(t)E
-]
-
-[
-\frac{dI}{dt}=\sigma(t)E-\gamma(t)I-\mu(t)I
-]
-
-[
-\frac{dR}{dt}=\gamma(t)I
-]
-
-[
-\frac{dD}{dt}=\mu(t)I
-]
-
-where
-
-- S(t) = Susceptible Population
-- E(t) = Exposed Population
-- I(t) = Infected Population
-- R(t) = Recovered Population
-- D(t) = Deceased Population
-
-The network also estimates
-
-- β(t) – Transmission Rate
-- σ(t) – Incubation Rate
-- γ(t) – Recovery Rate
-- μ(t) – Mortality Rate
-
----
-
-🧠 PINN Architecture
-
-Normalized Time
-        │
-        ▼
- Fully Connected Layer
-        │
-      Tanh
-        │
- Fully Connected Layer
-        │
-      Tanh
-        │
- Fully Connected Layer
-        │
-      Tanh
-        │
- Fully Connected Layer
-        │
-        ▼
-Outputs
-
-S(t)
-E(t)
-I(t)
-R(t)
-D(t)
-
-β(t)
-σ(t)
-γ(t)
-μ(t)
-
----
-
-⚙️ Loss Function
-
-The network is trained by minimizing
-
-[
-L=L_{Data}+L_{Physics}+L_{Initial}
-]
-
-where
-
-- Data Loss fits observed epidemic data.
-- Physics Loss enforces the SEIRD differential equations.
-- Initial Condition Loss satisfies the known initial epidemic conditions.
-
----
-
-📊 Dataset
-
-The project uses the public COVID-19 dataset containing
-
-- Confirmed Cases
-- Active Cases
-- Recovered Cases
-- Deaths
-
-Data preprocessing includes
-
-- Country filtering
-- Time indexing
-- Missing-value handling
-- Normalization using MinMaxScaler
-
----
-
-🚀 Installation
-
-Clone the repository
-
-git clone https://github.com/yourusername/SEIRD-PINN.git
+```bash
+git clone https://github.com/YourUsername/ONNs-SEIR.git
+```
 
 Move into the project directory
 
-cd SEIRD-PINN
+```bash
+cd ONNs-SEIR
+```
 
 Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
 ---
 
-📦 Requirements
+# ▶️ Usage
 
-Python >= 3.10
+Run the complete implementation
 
-PyTorch
-
-NumPy
-
-Pandas
-
-Matplotlib
-
-Scikit-learn
-
-KaggleHub
-
----
-
-▶️ Running the Project
-
-Train the model
-
+```bash
 python train.py
+```
 
-or open
+or execute the Jupyter Notebook
 
-SEIRD_PINN.ipynb
+```bash
+ONNs_SEIR.ipynb
+```
 
-using Google Colab.
+The program automatically
 
----
-
-📈 Outputs
-
-The trained PINN estimates
-
-- Hidden Susceptible Population
-- Hidden Exposed Population
-- Active Infected Population
-- Recovered Population
-- Death Population
-- Transmission Rate β(t)
-- Incubation Rate σ(t)
-- Recovery Rate γ(t)
-- Mortality Rate μ(t)
+- Defines the SEIR model
+- Builds Oscillatory Neural Networks
+- Trains the model
+- Solves the nonlinear system
+- Produces epidemic curves
 
 ---
 
-📉 Visualization
+# 📈 Results
 
-The repository generates
+The trained Oscillatory Neural Networks successfully learn the nonlinear behavior of the SEIR epidemic model.
 
-- Real vs Predicted Infected Cases
-- Real vs Predicted Recovered Cases
-- Real vs Predicted Death Cases
-- Hidden SEIRD States
-- Learned Transmission Rate
-- Learned Incubation Rate
-- Learned Recovery Rate
-- Learned Mortality Rate
-- Training Loss Curves
+Generated outputs include
 
----
+- Susceptible curve
+- Exposed curve
+- Infected curve
+- Recovered curve
+- Neural network approximation
+- Training loss
+- Solution comparison
 
-📁 Figures
-
-Save all generated figures inside
-
-figures/
-│
-├── architecture.png
-├── infected_prediction.png
-├── recovered_prediction.png
-├── deaths_prediction.png
-├── hidden_states.png
-└── learned_parameters.png
+The proposed ONNs-SGD framework demonstrates high numerical accuracy while avoiding explicit numerical discretization of the governing differential equations.
 
 ---
 
-🔬 Applications
+# 📷 Example Output
+
+<p align="center">
+<img src="Results.png" width="750">
+</p>
+
+The figure illustrates the learned SEIR epidemic trajectories generated by the Oscillatory Neural Network solver.
+
+---
+
+# 🔍 Applications
 
 This framework can be applied to
 
-- COVID-19 Modeling
-- Infectious Disease Forecasting
+- COVID-19 epidemic modeling
+- Infectious disease forecasting
+- Ordinary differential equations
 - Scientific Machine Learning
-- Physics-Informed Deep Learning
-- Public Health Analytics
-- Epidemic Simulation
-- Parameter Identification
+- Physics-Informed Neural Networks
+- Computational Epidemiology
+- Mathematical Biology
+- Dynamical System Simulation
 
 ---
 
-🔮 Future Work
+# 📚 Citation
 
-- Vaccination-aware SEIRDV Model
-- Bayesian PINNs
-- Uncertainty Quantification
-- Graph Neural PINNs
-- Hybrid PINN-LSTM Models
-- Multi-country Epidemic Modeling
-- Real-Time Forecasting
+If you use this repository in your research, please cite
 
----
+```text
+Mirza Mudassar Hussain et al.
 
-📚 Citation
-
-If you use this repository in your research, please cite:
-
-@article{SEIRDPINN2026,
-  title={Learning Hidden Epidemic Dynamics Using a Time-Varying SEIRD Physics-Informed Neural Network from Real COVID-19 Data},
-  author={Your Name},
-  journal={Under Review},
-  year={2026}
-}
+Implementation of Oscillatory Neural Networks for the Simulation of Nonlinear Dynamical Systems.
+```
 
 ---
 
-🙏 Acknowledgments
+# 🤝 Contributing
 
-This project was developed using
+Contributions are welcome.
 
+Please open an issue or submit a pull request for bug fixes, feature requests, or improvements.
+
+---
+
+# 📧 Contact
+
+**Mirza Mudassar Hussain**
+
+PhD Scholar
+
+Institute of Mathematics
+
+University of the Punjab
+
+Lahore, Pakistan
+
+📧 Email: mudasser.mh@gmail.com
+
+🌐 GitHub: https://github.com/Mirza-PU
+
+---
+
+# 📄 License
+
+This project is released under the **MIT License**.
+
+---
+
+# 🙏 Acknowledgements
+
+The authors gratefully acknowledge
+
+- NeuroDiffEq
 - PyTorch
-- Physics-Informed Neural Networks (PINNs)
-- COVID-19 Open Dataset
-- Scientific Machine Learning methodologies
+- NumPy
+- SciPy
+- Matplotlib
+- Open-source Scientific Machine Learning Community
 
 ---
 
-📄 License
+<p align="center">
 
-This project is distributed under the MIT License.
+## ⭐ If you find this repository useful, please consider giving it a Star!
 
----
-
-⭐ Support
-
-If you find this repository useful, please consider:
-
-⭐ Starring this repository
-
-📖 Citing the associated publication
-
-🤝 Contributing improvements through pull requests
-
-Your support helps improve open-source scientific machine learning research.
+</p>
